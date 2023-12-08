@@ -1,0 +1,18 @@
+{
+  "altura": "1.72",
+  "peso": "72",
+  "temperatura": "32",
+  "tensionSistolica": "70",
+  "tensionDiastolica": "150",
+  "fechaRevision": "2023-05-05",
+  "persona": 7,
+
+  "nombre":"lord baldomero" ,
+  "apellido":"el innombrable",
+  "identificacion":"5555555",
+  "fechaNacimiento": "1960-12-12",
+  "direccion": "las sombrias aventuras de billy y mandy",
+  "tipoSangre": "azul",
+  "genero": "masculino",
+  "telefono": "si tengo, te lo juro"
+}
