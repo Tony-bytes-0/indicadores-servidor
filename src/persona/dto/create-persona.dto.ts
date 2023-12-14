@@ -13,6 +13,10 @@ export class CreatePersonaDto {
   @IsEnum(gender)
   @IsString()
   genero: gender;
+  @IsString()
   telefono: string;
+  @IsString()
   telefonoEmergencia: string;
+  @IsString()
+  alergias: string;
 }

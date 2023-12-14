@@ -1,6 +1,5 @@
-import { Persona } from 'src/persona/entities/persona.entity';
 import { BaseEntity } from 'src/shared/entities/base.entity';
-import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 
 @Entity()
 export class HistoriaMedica extends BaseEntity {
@@ -16,7 +15,4 @@ export class HistoriaMedica extends BaseEntity {
   tensionDiastolica: string;
   @Column({ type: 'date' })
   fechaRevision: Date;
-  @OneToOne(() => Persona, (persona) => persona.historiaMedica, { eager: true })
-  @JoinColumn()
-  persona: Persona;
 }

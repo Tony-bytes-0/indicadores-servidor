@@ -1,7 +1,6 @@
 import { BaseEntity } from 'src/shared/entities/base.entity';
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { gender } from '../enum/genero.enum';
-import { HistoriaMedica } from 'src/historia-medica/entities/historia-medica.entity';
 
 @Entity()
 export class Persona extends BaseEntity {
@@ -23,6 +22,6 @@ export class Persona extends BaseEntity {
   telefono: string;
   @Column({ type: 'varchar' })
   telefonoEmergencia: string;
-  @OneToOne(() => HistoriaMedica, (historiaMedica) => historiaMedica.persona)
-  historiaMedica: HistoriaMedica;
+  @Column({ type: 'varchar' })
+  alergias: string;
 }

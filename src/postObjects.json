@@ -1,4 +1,13 @@
 {
+  "visitas":{
+    "altura": "string;",
+    "peso": "string;",
+    "temperatura": "string;",
+    "tensionSistolica": "string;",
+    "tensionDiastolica": "",
+    "fechaVisita": "Date",
+    "observaciones": ""
+  },
   "altura": "1.72",
   "peso": "72",
   "temperatura": "32",
@@ -7,12 +16,45 @@
   "fechaRevision": "2023-05-05",
   "persona": 7,
 
-  "nombre":"lord baldomero" ,
-  "apellido":"el innombrable",
+  "nombre":"Irumi" ,
+  "apellido":"Frozenheart",
   "identificacion":"5555555",
-  "fechaNacimiento": "1960-12-12",
-  "direccion": "las sombrias aventuras de billy y mandy",
+  "fechaNacimiento": "1999-01-07",
+  "direccion": "las montañas",
   "tipoSangre": "azul",
-  "genero": "masculino",
-  "telefono": "si tengo, te lo juro"
+  "genero": "femenino",
+  "telefono": "04248754443",
+  "telefonoEmergencia":"04148404267",
+  "alergias":"al polen",
+
+  "extra":{
+    "nombre":"Monica" ,
+    "apellido":"Strikes",
+    "identificacion":"8888888",
+    "fechaNacimiento": "2006-05-05",
+    "direccion": "desconocido",
+    "tipoSangre": "azul",
+    "genero": "femenino",
+    "telefono": "04248754443",
+    "telefonoEmergencia":"04148404267",
+    "alergias":"desconocido"
+  },
+  "segundoExtra":{
+      "nombre":"Poison" ,
+      "apellido":"Poison",
+      "identificacion":"7777777",
+      "fechaNacimiento": "2006-10-01",
+      "direccion": "desconocido",
+      "tipoSangre": "azul",
+      "genero": "femenino",
+      "telefono": "04248754443",
+      "telefonoEmergencia":"04148404267",
+      "alergias":"humo de tabaco"
+  },
+
+  "medico":{"sacs": "000",
+  "nombreMedico": "simon bolivar",
+  "especialidad": "pediatra"}
+
+
 }

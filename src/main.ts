@@ -7,6 +7,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   await app.listen(4000);
-  console.info('Welcome, Server run on http://localhost:4000 no ladilles');
+  console.info('Welcome, Server run on http://localhost:4000');
 }
 bootstrap();
