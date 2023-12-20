@@ -33,4 +33,9 @@ export class VisitasService {
   remove(id: number) {
     return this.visitasRepository.delete({ id: id });
   }
+
+  async countVisits(): Promise<object> {
+    const x = await this.visitasRepository.find();
+    return { result: x.length };
+  }
 }

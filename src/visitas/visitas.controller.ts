@@ -25,6 +25,10 @@ export class VisitasController {
     return this.visitasService.findAll();
   }
 
+  @Get('count')
+  countVisits() {
+    return this.visitasService.countVisits();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
