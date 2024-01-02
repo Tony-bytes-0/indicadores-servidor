@@ -38,4 +38,14 @@ export class VisitasService {
     const x = await this.visitasRepository.find();
     return { result: x.length };
   }
+
+  async orderByMost() {
+    const result = [];
+    const x = await this.visitasRepository.find();
+    console.log(x[0].enfermedades);
+    for (let i = 0; i < x.length; i++) {
+      result.push(x[i].enfermedades.id);
+    }
+    return result;
+  }
 }

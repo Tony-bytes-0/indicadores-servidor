@@ -29,6 +29,10 @@ export class VisitasController {
   countVisits() {
     return this.visitasService.countVisits();
   }
+  @Get('ordenar')
+  orderByMost() {
+    return this.visitasService.orderByMost();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
