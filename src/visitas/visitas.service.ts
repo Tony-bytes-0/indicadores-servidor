@@ -46,6 +46,12 @@ export class VisitasService {
     for (let i = 0; i < x.length; i++) {
       result.push(x[i].enfermedades.id);
     }
-    return result;
+    const repetidos = {};
+
+    result.forEach(function (valor) {
+      repetidos[valor] = (repetidos[valor] || 0) + 1;
+    });
+
+    return repetidos;
   }
 }
