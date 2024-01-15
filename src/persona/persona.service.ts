@@ -23,6 +23,10 @@ export class PersonaService {
     return this.personRepo.findOneBy({ id: id });
   }
 
+  findOneByDni(identificacion: string) {
+    return this.personRepo.findOneBy({ identificacion: identificacion });
+  }
+
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
     const toUpdate = await this.personRepo.findOne({ where: { id } });
     const updated = Object.assign(toUpdate, updatePersonaDto);

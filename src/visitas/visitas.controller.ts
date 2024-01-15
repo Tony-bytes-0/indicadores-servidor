@@ -8,16 +8,23 @@ import {
   Delete,
 } from '@nestjs/common';
 import { VisitasService } from './visitas.service';
-import { CreateVisitaDto } from './dto/create-visita.dto';
+//import { CreateVisitaDto } from './dto/create-visita.dto';
 import { UpdateVisitaDto } from './dto/update-visita.dto';
+//import { CreatePersonaDto } from 'src/persona/dto/create-persona.dto';
+import { PersonaHistoriaDto } from './dto/persona-historia-dto';
 
 @Controller('visitas')
 export class VisitasController {
   constructor(private readonly visitasService: VisitasService) {}
 
-  @Post()
+  /*   @Post()
   create(@Body() createVisitaDto: CreateVisitaDto) {
     return this.visitasService.create(createVisitaDto);
+  } */
+
+  @Post('personaHistoria')
+  personaHistoria(@Body() personaHistoriaDto: PersonaHistoriaDto) {
+    return this.visitasService.personaHistoria(personaHistoriaDto);
   }
 
   @Get()

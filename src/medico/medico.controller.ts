@@ -26,8 +26,8 @@ export class MedicoController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.medicoService.findOne(+id);
+  findBySacs(@Param('id') sacs: string) {
+    return this.medicoService.findBySacs(sacs);
   }
 
   @Patch(':id')

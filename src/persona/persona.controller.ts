@@ -26,8 +26,8 @@ export class PersonaController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.personaService.findOne(+id);
+  findOneByDni(@Param('id') identificacion: string) {
+    return this.personaService.findOneByDni(identificacion);
   }
 
   @Patch(':id')

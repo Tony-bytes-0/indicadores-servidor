@@ -24,6 +24,10 @@ export class MedicoService {
     return this.medicoRepository.findOneBy({ id: id });
   }
 
+  findBySacs(sacs: string) {
+    return this.medicoRepository.findOneBy({ sacs: sacs });
+  }
+
   async update(id: number, updateMedicoDto: UpdateMedicoDto) {
     const toUpdate = await this.medicoRepository.findOne({ where: { id } });
     const updated = Object.assign(toUpdate, updateMedicoDto);
