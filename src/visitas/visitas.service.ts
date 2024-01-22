@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Visitas } from './entities/visitas.entity';
 import { Persona } from 'src/persona/entities/persona.entity';
+import { Enfermedades } from 'src/enfermedades/entities/enfermedade.entity';
 import { Medico } from 'src/medico/entities/medico.entity';
 import { DataSource } from 'typeorm';
 
@@ -16,6 +17,8 @@ export class VisitasService {
     private readonly visitasRepository: Repository<Visitas>,
     @InjectRepository(Persona) private readonly personRepo: Repository<Persona>,
     @InjectRepository(Medico) private readonly medicoRepo: Repository<Medico>,
+    @InjectRepository(Enfermedades)
+    private readonly enfermedadRepo: Repository<Enfermedades>,
     private readonly datasource: DataSource,
   ) {}
 
@@ -92,16 +95,28 @@ export class VisitasService {
   async orderByMost() {
     const result = [];
     const x = await this.visitasRepository.find();
-    console.log(x[0].enfermedades);
     for (let i = 0; i < x.length; i++) {
       result.push(x[i].enfermedades.id);
     }
+    const enfList = await this.enfermedadRepo.find();
+    console.log(enfList, 'lista: ', result);
+    const z = result.map((e) => {
+      for (let i = 0; i < enfList.length; i++) {
+        if (e == enfList[i].id) {
+          return enfList[i].nombreEnfermedad;
+        }
+      }
+    });
     const repetidos = {};
-
-    result.forEach(function (valor) {
+    z.forEach(function (valor) {
       repetidos[valor] = (repetidos[valor] || 0) + 1;
     });
 
+    /*     const repetidos = {};
+
+    result.forEach(function (valor) {
+      repetidos[valor] = (repetidos[valor] || 0) + 1;
+    }); */
     return repetidos;
   }
 }
