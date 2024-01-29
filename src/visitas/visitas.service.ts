@@ -9,6 +9,7 @@ import { Persona } from 'src/persona/entities/persona.entity';
 import { Enfermedades } from 'src/enfermedades/entities/enfermedade.entity';
 import { Medico } from 'src/medico/entities/medico.entity';
 import { DataSource } from 'typeorm';
+import * as moment from 'moment';
 
 @Injectable()
 export class VisitasService {
@@ -28,7 +29,6 @@ export class VisitasService {
   }
 
   async personaHistoria(personaHistoriaDto: PersonaHistoriaDto) {
-    console.log('mostrando el objeto en el servidor: ', personaHistoriaDto);
     const queryRunner = this.datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
@@ -42,8 +42,6 @@ export class VisitasService {
     if (!person) {
       person = this.personRepo.create(personaHistoriaDto.user);
     }
-    console.log(person);
-
     if (!medic) {
       medic = this.medicoRepo.create(personaHistoriaDto.medic);
     }
@@ -91,7 +89,21 @@ export class VisitasService {
     const x = await this.visitasRepository.find();
     return { result: x.length };
   }
+  async orderByMonth(dateMonth: Date) {
+    const rightNow = moment().format('YYYY');
+    console.log(rightNow);
+    const entity = this.visitasRepository.createQueryBuilder('i');
+    if (dateMonth) {
+      entity.andWhere('extract(month from "fechaVisita") = :dateMonth', {
+        dateMonth,
+      });
+      entity.where('extract(year from "fechaVisita") = :rightNow', {
+        rightNow,
+      });
+    }
 
+    return await entity.getMany();
+  }
   async orderByMost() {
     const result = [];
     const x = await this.visitasRepository.find();
@@ -99,7 +111,6 @@ export class VisitasService {
       result.push(x[i].enfermedades.id);
     }
     const enfList = await this.enfermedadRepo.find();
-    console.log(enfList, 'lista: ', result);
     const z = result.map((e) => {
       for (let i = 0; i < enfList.length; i++) {
         if (e == enfList[i].id) {
@@ -112,11 +123,10 @@ export class VisitasService {
       repetidos[valor] = (repetidos[valor] || 0) + 1;
     });
 
-    /*     const repetidos = {};
-
-    result.forEach(function (valor) {
-      repetidos[valor] = (repetidos[valor] || 0) + 1;
-    }); */
     return repetidos;
   }
 }
+/*const repetidos = {};
+    result.forEach(function (valor) {
+      repetidos[valor] = (repetidos[valor] || 0) + 1;
+    }); */

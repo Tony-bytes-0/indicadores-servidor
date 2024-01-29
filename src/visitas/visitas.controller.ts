@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { VisitasService } from './visitas.service';
 //import { CreateVisitaDto } from './dto/create-visita.dto';
@@ -39,6 +40,10 @@ export class VisitasController {
   @Get('ordenar')
   orderByMost() {
     return this.visitasService.orderByMost();
+  }
+  @Get('mes')
+  async getOrderBy(@Query('dateMonth') dateMonth: Date) {
+    return this.visitasService.orderByMonth(dateMonth);
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
