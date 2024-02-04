@@ -91,18 +91,34 @@ export class VisitasService {
   }
   async orderByMonth(dateMonth: Date) {
     const rightNow = moment().format('YYYY');
-    console.log(rightNow);
     const entity = this.visitasRepository.createQueryBuilder('i');
     if (dateMonth) {
       entity.andWhere('extract(month from "fechaVisita") = :dateMonth', {
         dateMonth,
       });
-      entity.where('extract(year from "fechaVisita") = :rightNow', {
+      entity.andWhere('extract(year from "fechaVisita") = :rightNow', {
         rightNow,
       });
     }
-
+    //console.log(' se accedio aqui con el parametro: ', dateMonth);
     return await entity.getMany();
+  }
+
+  async allMonths() {
+    const rightNow = moment().format('YYYY');
+    const entity = this.visitasRepository.createQueryBuilder('i');
+    const meses = [];
+    for (let i = 1; i < 13; i++) {
+      if (i) {
+        entity.andWhere('extract(month from "fechaVisita") = : i', { i });
+        entity.where('extract(year from "fechaVisita") = :rightNow', {
+          rightNow,
+        });
+        meses.push((await entity.getMany()).length);
+        console.log('llevo: ', (await entity.getMany()).length);
+      }
+    }
+    console.log('este es el tesultado: ', meses);
   }
   async orderByMost() {
     const result = [];

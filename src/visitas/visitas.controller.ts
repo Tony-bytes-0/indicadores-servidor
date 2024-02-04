@@ -45,6 +45,10 @@ export class VisitasController {
   async getOrderBy(@Query('dateMonth') dateMonth: Date) {
     return this.visitasService.orderByMonth(dateMonth);
   }
+  @Get('allMonths')
+  async allMonths() {
+    return this.visitasService.allMonths();
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
