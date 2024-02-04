@@ -105,20 +105,13 @@ export class VisitasService {
   }
 
   async allMonths() {
-    const rightNow = moment().format('YYYY');
-    const entity = this.visitasRepository.createQueryBuilder('i');
-    const meses = [];
-    for (let i = 1; i < 13; i++) {
-      if (i) {
-        entity.andWhere('extract(month from "fechaVisita") = : i', { i });
-        entity.where('extract(year from "fechaVisita") = :rightNow', {
-          rightNow,
-        });
-        meses.push((await entity.getMany()).length);
-        console.log('llevo: ', (await entity.getMany()).length);
-      }
-    }
-    console.log('este es el tesultado: ', meses);
+    return await this.visitasRepository.query(`
+      SELECT EXTRACT (MONTH FROM ("fechaVisita")) AS Mes, COUNT(*) AS TotalRegistros
+      FROM visitas
+      WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) 
+      GROUP BY EXTRACT (MONTH FROM ("fechaVisita"))
+      ORDER BY EXTRACT (MONTH FROM("fechaVisita") );
+    `);
   }
   async orderByMost() {
     const result = [];
