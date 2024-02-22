@@ -4,7 +4,7 @@ import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
 export class Medico extends BaseEntity {
-  @Column({ type: 'varchar' })
+  @Column({ type: 'varchar', unique: true })
   sacs: string;
   @Column({ type: 'varchar' })
   nombreMedico: string;
