@@ -29,6 +29,6 @@ export class EnfermedadesService {
   } */
 
   remove(id: number) {
-    return `This action removes a #${id} enfermedade`;
+    return this.EnfermedadesRepository.delete({ id: id });
   }
 }
