@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 
-import {  IsOptional, ValidateIf, ValidateNested } from 'class-validator';
+import {  IsNotEmpty, IsOptional, ValidateIf, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 import { CreateVisitaDto } from './create-visita.dto';
@@ -25,7 +25,8 @@ export class PersonaHistoriaDto {
   @Type (() => CreateMedicoDto )
   medic: CreateMedicoDto
 
-  //enfermedades: number
+  @IsNotEmpty()
+  enfermedades: number
 }
  
 

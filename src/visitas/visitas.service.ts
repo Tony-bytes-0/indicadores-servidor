@@ -50,7 +50,7 @@ export class VisitasService {
       ...personaHistoriaDto.historiaMedica,
       persona: person,
       medico: medic,
-      enfermedades: <any>1,
+      enfermedades: <any>personaHistoriaDto.enfermedades,
     });
 
     try {
@@ -114,25 +114,12 @@ export class VisitasService {
     `);
   }
   async orderByMost() {
-    const result = [];
-    const x = await this.visitasRepository.find();
-    for (let i = 0; i < x.length; i++) {
-      result.push(x[i].enfermedades.id);
-    }
-    const enfList = await this.enfermedadRepo.find();
-    const z = result.map((e) => {
-      for (let i = 0; i < enfList.length; i++) {
-        if (e == enfList[i].id) {
-          return enfList[i].nombreEnfermedad;
-        }
-      }
-    });
-    const repetidos = {};
-    z.forEach(function (valor) {
-      repetidos[valor] = (repetidos[valor] || 0) + 1;
-    });
-
-    return repetidos;
+    return await this.visitasRepository.query(`
+    SELECT enfermedades."nombreEnfermedad", COUNT(enfermedades."nombreEnfermedad")
+    FROM visitas
+    LEFT JOIN enfermedades ON visitas."enfermedadesId" = enfermedades.id
+    GROUP BY enfermedades."nombreEnfermedad"
+  `);
   }
 }
 /*const repetidos = {};
