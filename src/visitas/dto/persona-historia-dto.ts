@@ -10,7 +10,6 @@ import { CreateMedicoDto } from 'src/medico/dto/create-medico.dto';
 export class PersonaHistoriaDto {
   
   @ValidateIf((object, value) => value!==undefined)
-  @IsOptional()
   @ValidateNested()
   @Type (() => CreatePersonaDto )
   user: CreatePersonaDto;

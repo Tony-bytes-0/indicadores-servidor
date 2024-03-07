@@ -21,7 +21,6 @@ export class Visitas extends BaseEntity {
   @Column({ type: 'varchar' })
   observaciones: string;
   @ManyToOne(() => Persona, (persona) => persona.id, { eager: true })
-  @JoinColumn()
   persona: Persona;
   @ManyToOne(() => Medico, (medico) => medico.sacs, { eager: true })
   @JoinColumn()
@@ -30,5 +29,5 @@ export class Visitas extends BaseEntity {
     eager: true,
   })
   @JoinColumn()
-  enfermedades: Medico;
+  enfermedades: Enfermedades;
 }

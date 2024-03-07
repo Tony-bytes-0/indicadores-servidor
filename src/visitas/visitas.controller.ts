@@ -45,6 +45,14 @@ export class VisitasController {
   async getOrderBy(@Query('dateMonth') dateMonth: Date) {
     return this.visitasService.orderByMonth(dateMonth);
   }
+  @Get('ordenarPorGenero')
+  async orderByGender() {
+    return this.visitasService.orderByGender();
+  }
+  @Get('ordenarPorEdad')
+  async orderByAge() {
+    return this.visitasService.orderByAge();
+  }
   @Get('allMonths')
   async allMonths() {
     return this.visitasService.allMonths();

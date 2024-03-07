@@ -1,6 +1,7 @@
 import { BaseEntity } from 'src/shared/entities/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { gender } from '../enum/genero.enum';
+import { Visitas } from 'src/visitas/entities/visitas.entity';
 
 @Entity()
 export class Persona extends BaseEntity {
@@ -24,4 +25,6 @@ export class Persona extends BaseEntity {
   telefonoEmergencia: string;
   @Column({ type: 'varchar' })
   alergias: string;
+  @OneToMany(() => Visitas, (visitas) => visitas.id)
+  visitas: Visitas;
 }

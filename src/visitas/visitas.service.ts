@@ -39,23 +39,24 @@ export class VisitasService {
     let medic = await this.medicoRepo.findOneBy({
       sacs: personaHistoriaDto.medic.sacs,
     });
-    if (!person) {
-      person = this.personRepo.create(personaHistoriaDto.user);
-    }
-    if (!medic) {
-      medic = this.medicoRepo.create(personaHistoriaDto.medic);
-    }
-
-    const temp = this.visitasRepository.create({
-      ...personaHistoriaDto.historiaMedica,
-      persona: person,
-      medico: medic,
-      enfermedades: <any>personaHistoriaDto.enfermedades,
-    });
-
     try {
-      await queryRunner.manager.save(person);
-      await queryRunner.manager.save(medic);
+      if (!person) {
+        person = this.personRepo.create(personaHistoriaDto.user);
+        await queryRunner.manager.save(person);
+      }
+
+      if (!medic) {
+        medic = this.medicoRepo.create(personaHistoriaDto.medic);
+        await queryRunner.manager.save(medic);
+      }
+
+      const temp = this.visitasRepository.create({
+        ...personaHistoriaDto.historiaMedica,
+        persona: person,
+        medico: medic,
+        enfermedades: <any>personaHistoriaDto.enfermedades,
+      });
+
       await queryRunner.manager.save(temp);
       await queryRunner.commitTransaction();
     } catch (error) {
@@ -104,6 +105,38 @@ export class VisitasService {
     return await entity.getMany();
   }
 
+  async orderByGender() {
+    //'SELECT persona.genero, COUNT(*) as count FROM visitas INNER JOIN persona ON visitas."personaId" = persona.id GROUP BY persona.genero', esto es lo que quiero
+    // 'SELECT persona.genero, COUNT(*) as count FROM visitas INNER JOIN persona ON visitas."personaId" = persona.id WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY persona.genero',
+    // ordenar por generos y solamente traer los registros del mes actual
+    return this.visitasRepository.query(`
+    SELECT persona.genero, COUNT(*) as count
+      FROM visitas
+      INNER JOIN persona ON visitas."personaId" = persona.id
+      WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+      GROUP BY persona.genero;
+    `);
+  }
+  async orderByAge() {
+    return this.visitasRepository.query(`
+    SELECT 
+    CASE 
+        WHEN DATE_PART('year', AGE(NOW(), persona."fechaNacimiento")) > 18 THEN 'Mayores de edad'
+        ELSE 'Menores de edad'
+    END as age_group,
+    COUNT(*) as count
+FROM visitas
+INNER JOIN persona ON visitas."personaId" = persona.id
+GROUP BY age_group;
+  `);
+  }
+  /*
+  para contar los mayores `
+    SELECT visitas.*
+    FROM visitas
+    INNER JOIN persona ON visitas."personaId" = persona.id
+    WHERE DATE_PART('year', AGE(NOW(), persona."fechaNacimiento")) > 18;
+  `*/
   async allMonths() {
     return await this.visitasRepository.query(`
       SELECT EXTRACT (MONTH FROM ("fechaVisita")) AS Mes, COUNT(*) AS TotalRegistros
@@ -118,6 +151,7 @@ export class VisitasService {
     SELECT enfermedades."nombreEnfermedad", COUNT(enfermedades."nombreEnfermedad")
     FROM visitas
     LEFT JOIN enfermedades ON visitas."enfermedadesId" = enfermedades.id
+    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) 
     GROUP BY enfermedades."nombreEnfermedad"
   `);
   }
