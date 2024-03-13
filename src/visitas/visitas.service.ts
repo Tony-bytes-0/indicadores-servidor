@@ -118,16 +118,27 @@ export class VisitasService {
     `);
   }
   async orderByAge() {
+    /*       SELECT 
+    CASE
+      WHEN EXTRACT(YEAR FROM AGE(NOW(), persona."fechaNacimiento")) >= 18 THEN 'Mayores de edad'
+      ELSE 'Menores de edad'
+    END AS age_group,
+    COUNT(*) as count
+    FROM visitas
+    INNER JOIN persona ON visitas."personaId" = persona.id
+    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+    GROUP BY age_group;*/
     return this.visitasRepository.query(`
     SELECT 
-    CASE 
-        WHEN DATE_PART('year', AGE(NOW(), persona."fechaNacimiento")) > 18 THEN 'Mayores de edad'
-        ELSE 'Menores de edad'
-    END as age_group,
+    CASE
+      WHEN EXTRACT(YEAR FROM AGE(NOW(), persona."fechaNacimiento")) >= 18 THEN 'Mayores de edad'
+      ELSE 'Menores de edad'
+    END AS age_group,
     COUNT(*) as count
-FROM visitas
-INNER JOIN persona ON visitas."personaId" = persona.id
-GROUP BY age_group;
+    FROM visitas
+    INNER JOIN persona ON visitas."personaId" = persona.id
+    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+    GROUP BY age_group;
   `);
   }
   /*

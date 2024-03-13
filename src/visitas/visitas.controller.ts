@@ -3,10 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { VisitasService } from './visitas.service';
 //import { CreateVisitaDto } from './dto/create-visita.dto';
@@ -62,7 +62,7 @@ export class VisitasController {
     return this.visitasService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateVisitaDto: UpdateVisitaDto) {
     return this.visitasService.update(+id, updateVisitaDto);
   }
