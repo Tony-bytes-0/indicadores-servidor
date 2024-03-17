@@ -101,14 +101,10 @@ export class VisitasService {
         rightNow,
       });
     }
-    //console.log(' se accedio aqui con el parametro: ', dateMonth);
     return await entity.getMany();
   }
 
   async orderByGender() {
-    //'SELECT persona.genero, COUNT(*) as count FROM visitas INNER JOIN persona ON visitas."personaId" = persona.id GROUP BY persona.genero', esto es lo que quiero
-    // 'SELECT persona.genero, COUNT(*) as count FROM visitas INNER JOIN persona ON visitas."personaId" = persona.id WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) GROUP BY persona.genero',
-    // ordenar por generos y solamente traer los registros del mes actual
     return this.visitasRepository.query(`
     SELECT persona.genero, COUNT(*) as count
       FROM visitas
@@ -118,16 +114,6 @@ export class VisitasService {
     `);
   }
   async orderByAge() {
-    /*       SELECT 
-    CASE
-      WHEN EXTRACT(YEAR FROM AGE(NOW(), persona."fechaNacimiento")) >= 18 THEN 'Mayores de edad'
-      ELSE 'Menores de edad'
-    END AS age_group,
-    COUNT(*) as count
-    FROM visitas
-    INNER JOIN persona ON visitas."personaId" = persona.id
-    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
-    GROUP BY age_group;*/
     return this.visitasRepository.query(`
     SELECT 
     CASE
@@ -141,13 +127,6 @@ export class VisitasService {
     GROUP BY age_group;
   `);
   }
-  /*
-  para contar los mayores `
-    SELECT visitas.*
-    FROM visitas
-    INNER JOIN persona ON visitas."personaId" = persona.id
-    WHERE DATE_PART('year', AGE(NOW(), persona."fechaNacimiento")) > 18;
-  `*/
   async allMonths() {
     return await this.visitasRepository.query(`
       SELECT EXTRACT (MONTH FROM ("fechaVisita")) AS Mes, COUNT(*) AS TotalRegistros
@@ -167,7 +146,3 @@ export class VisitasService {
   `);
   }
 }
-/*const repetidos = {};
-    result.forEach(function (valor) {
-      repetidos[valor] = (repetidos[valor] || 0) + 1;
-    }); */
