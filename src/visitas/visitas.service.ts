@@ -143,6 +143,16 @@ export class VisitasService {
     LEFT JOIN enfermedades ON visitas."enfermedadesId" = enfermedades.id
     WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) 
     GROUP BY enfermedades."nombreEnfermedad"
+    ORDER BY count DESC;
   `);
+  }
+  async visitCount() {
+    return await this.visitasRepository.query(`
+    SELECT persona.identificacion, COUNT(*) AS cantidad_visitas
+    FROM visitas
+    JOIN persona ON visitas."personaId" = persona.id
+    GROUP BY persona.identificacion
+    ORDER BY cantidad_visitas DESC;
+    `);
   }
 }

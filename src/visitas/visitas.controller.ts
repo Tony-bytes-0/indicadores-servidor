@@ -18,11 +18,6 @@ import { PersonaHistoriaDto } from './dto/persona-historia-dto';
 export class VisitasController {
   constructor(private readonly visitasService: VisitasService) {}
 
-  /*   @Post()
-  create(@Body() createVisitaDto: CreateVisitaDto) {
-    return this.visitasService.create(createVisitaDto);
-  } */
-
   @Post('personaHistoria')
   personaHistoria(@Body() personaHistoriaDto: PersonaHistoriaDto) {
     return this.visitasService.personaHistoria(personaHistoriaDto);
@@ -56,6 +51,10 @@ export class VisitasController {
   @Get('allMonths')
   async allMonths() {
     return this.visitasService.allMonths();
+  }
+  @Get('visitCount')
+  visitCount() {
+    return this.visitasService.visitCount();
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
