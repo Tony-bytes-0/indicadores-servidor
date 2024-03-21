@@ -8,6 +8,7 @@ import { VisitasModule } from './visitas/visitas.module';
 import { DataSourceConfig } from './database.config';
 import { EnfermedadesModule } from './enfermedades/enfermedades.module';
 import { MedicoModule } from './medico/medico.module';
+import { LocalidadModule } from './localidad/localidad.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { MedicoModule } from './medico/medico.module';
     DataSourceConfig,
     EnfermedadesModule,
     MedicoModule,
+    LocalidadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

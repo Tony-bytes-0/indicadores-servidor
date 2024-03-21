@@ -1,5 +1,6 @@
 import { IsString, IsDateString, IsEnum } from 'class-validator';
 import { gender } from '../enum/genero.enum';
+import { Localidad } from 'src/localidad/entities/localidad.entity';
 
 export class UpdatePersonaDto {
   @IsString()
@@ -15,4 +16,5 @@ export class UpdatePersonaDto {
   genero: gender;
   telefono: string;
   telefonoEmergencia: string;
+  localidad: Localidad;
 }

@@ -1,7 +1,9 @@
 import { BaseEntity } from 'src/shared/entities/base.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { gender } from '../enum/genero.enum';
 import { Visitas } from 'src/visitas/entities/visitas.entity';
+import { Localidad } from 'src/localidad/entities/localidad.entity';
+//import { Localidad } from 'src/localidad/entities/localidad.entity';
 
 @Entity()
 export class Persona extends BaseEntity {
@@ -27,4 +29,6 @@ export class Persona extends BaseEntity {
   alergias: string;
   @OneToMany(() => Visitas, (visitas) => visitas.id)
   visitas: Visitas;
+  @ManyToOne(() => Localidad, (localidad) => localidad.persona, { eager: true })
+  localidad: Localidad[];
 }
