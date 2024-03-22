@@ -24,7 +24,10 @@ export class PersonaController {
   findAll() {
     return this.personaService.findAll();
   }
-
+  @Get('sitesCount')
+  sitesCount() {
+    return this.personaService.sitesCount();
+  }
   @Get(':id')
   findOneByDni(@Param('id') identificacion: string) {
     return this.personaService.findOneByDni(identificacion);

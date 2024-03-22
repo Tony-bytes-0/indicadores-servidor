@@ -6,10 +6,11 @@ import { Visitas } from './entities/visitas.entity';
 import { Persona } from 'src/persona/entities/persona.entity';
 import { Medico } from 'src/medico/entities/medico.entity';
 import { Enfermedades } from 'src/enfermedades/entities/enfermedade.entity';
+import { VisitasReportsServices } from './visitas.services.reports';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Visitas, Persona, Medico, Enfermedades])],
   controllers: [VisitasController],
-  providers: [VisitasService],
+  providers: [VisitasService, VisitasReportsServices],
 })
 export class VisitasModule {}

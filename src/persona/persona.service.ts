@@ -26,6 +26,14 @@ export class PersonaService {
   findOneByDni(identificacion: string) {
     return this.personRepo.findOneBy({ identificacion: identificacion });
   }
+  async sitesCount() {
+    return await this.personRepo.query(`
+    SELECT localidad."nombreLocalidad", COUNT(*) as count
+    from persona
+    LEFT JOIN localidad ON "localidadId" = localidad.id
+    GROUP BY localidad."nombreLocalidad"
+    `);
+  }
 
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
     const toUpdate = await this.personRepo.findOne({ where: { id } });

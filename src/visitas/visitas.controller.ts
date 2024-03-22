@@ -9,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { VisitasService } from './visitas.service';
+import { VisitasReportsServices } from './visitas.services.reports';
 //import { CreateVisitaDto } from './dto/create-visita.dto';
 import { UpdateVisitaDto } from './dto/update-visita.dto';
 //import { CreatePersonaDto } from 'src/persona/dto/create-persona.dto';
@@ -16,7 +17,10 @@ import { PersonaHistoriaDto } from './dto/persona-historia-dto';
 
 @Controller('visitas')
 export class VisitasController {
-  constructor(private readonly visitasService: VisitasService) {}
+  constructor(
+    private readonly visitasService: VisitasService,
+    private readonly visitasReportService: VisitasReportsServices,
+  ) {}
 
   @Post('personaHistoria')
   personaHistoria(@Body() personaHistoriaDto: PersonaHistoriaDto) {
@@ -56,6 +60,7 @@ export class VisitasController {
   visitCount() {
     return this.visitasService.visitCount();
   }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
