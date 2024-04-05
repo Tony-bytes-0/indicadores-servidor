@@ -17,4 +17,6 @@ export class CreateVisitaDto {
   fechaVisita: Date;
   @IsString()
   observaciones: string;
+  @IsString()
+  satisfaccionPaciente: string;
 }

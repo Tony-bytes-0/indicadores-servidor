@@ -27,7 +27,6 @@ export class PersonaHistoriaDto {
   @IsNotEmpty()
   enfermedades: number
 }
- 
 
 /* import { CreateVisitaDto } from './create-visita.dto';
 import { CreatePersonaDto } from '../../persona/dto/create-persona.dto';

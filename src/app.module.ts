@@ -9,6 +9,7 @@ import { DataSourceConfig } from './database.config';
 import { EnfermedadesModule } from './enfermedades/enfermedades.module';
 import { MedicoModule } from './medico/medico.module';
 import { LocalidadModule } from './localidad/localidad.module';
+import { NivelAcademicoModule } from './nivel-academico/nivel-academico.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { LocalidadModule } from './localidad/localidad.module';
     EnfermedadesModule,
     MedicoModule,
     LocalidadModule,
+    NivelAcademicoModule,
   ],
   controllers: [AppController],
   providers: [AppService],

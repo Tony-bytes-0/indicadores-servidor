@@ -32,10 +32,11 @@ export class VisitasService {
     const queryRunner = this.datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-
+    console.log(personaHistoriaDto);
     let person = await this.personRepo.findOneBy({
       identificacion: personaHistoriaDto.user.identificacion,
     });
+
     let medic = await this.medicoRepo.findOneBy({
       sacs: personaHistoriaDto.medic.sacs,
     });

@@ -24,7 +24,7 @@ export class EnfermedadesService {
     return 'patata'; //this.EnfermedadesRepository.find({ id: id });
   }
 
-  /*   update(id: number, updateEnfermedadeDto: UpdateEnfermedadeDto) {
+  /* update(id: number, updateEnfermedadeDto: UpdateEnfermedadeDto) {
     return `This action updates a #${id} enfermedade`;
   } */
 

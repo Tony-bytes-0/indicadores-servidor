@@ -20,6 +20,8 @@ export class Visitas extends BaseEntity {
   fechaVisita: Date;
   @Column({ type: 'varchar' })
   observaciones: string;
+  @Column({ type: 'varchar', nullable: true })
+  satisfaccionPaciente: string;
   @ManyToOne(() => Persona, (persona) => persona.id, { eager: true })
   persona: Persona;
   @ManyToOne(() => Medico, (medico) => medico.sacs, { eager: true })

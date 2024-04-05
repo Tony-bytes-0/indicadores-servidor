@@ -1,6 +1,7 @@
+import { NivelAcademico } from 'src/nivel-academico/entities/nivel-academico.entity';
 import { BaseEntity } from 'src/shared/entities/base.entity';
 import { Visitas } from 'src/visitas/entities/visitas.entity';
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
 export class Medico extends BaseEntity {
@@ -12,4 +13,8 @@ export class Medico extends BaseEntity {
   especialidad: string;
   @OneToMany(() => Visitas, (visitas) => visitas.medico)
   visitas: Visitas;
+  @ManyToOne(() => NivelAcademico, (nivelAcademico) => nivelAcademico.id, {
+    eager: true,
+  })
+  nivelAcademico: NivelAcademico;
 }
