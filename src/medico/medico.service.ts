@@ -12,8 +12,19 @@ export class MedicoService {
     private readonly medicoRepository: Repository<Medico>,
   ) {}
   async create(createMedicoDto: CreateMedicoDto) {
-    const temp = this.medicoRepository.create(createMedicoDto);
-    return await this.medicoRepository.save(temp);
+    const find = await this.medicoRepository.findOneBy({
+      sacs: createMedicoDto.sacs,
+    });
+    if (find) {
+      const toUpdate = await this.medicoRepository.findOne({
+        where: { id: find.id },
+      });
+      const updated = Object.assign(toUpdate, createMedicoDto);
+      return await this.medicoRepository.save(updated);
+    } else {
+      const temp = this.medicoRepository.create(createMedicoDto);
+      return await this.medicoRepository.save(temp);
+    }
   }
 
   findAll(): object {

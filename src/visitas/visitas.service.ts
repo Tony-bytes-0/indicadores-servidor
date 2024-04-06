@@ -32,11 +32,10 @@ export class VisitasService {
     const queryRunner = this.datasource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    console.log(personaHistoriaDto);
+
     let person = await this.personRepo.findOneBy({
       identificacion: personaHistoriaDto.user.identificacion,
     });
-
     let medic = await this.medicoRepo.findOneBy({
       sacs: personaHistoriaDto.medic.sacs,
     });
@@ -50,7 +49,7 @@ export class VisitasService {
         medic = this.medicoRepo.create(personaHistoriaDto.medic);
         await queryRunner.manager.save(medic);
       }
-
+      console.log(personaHistoriaDto.historiaMedica);
       const temp = this.visitasRepository.create({
         ...personaHistoriaDto.historiaMedica,
         persona: person,
@@ -61,6 +60,7 @@ export class VisitasService {
       await queryRunner.manager.save(temp);
       await queryRunner.commitTransaction();
     } catch (error) {
+      //console.log('se supone que hubo un error', error);
       await queryRunner.rollbackTransaction();
     } finally {
       await queryRunner.release();
