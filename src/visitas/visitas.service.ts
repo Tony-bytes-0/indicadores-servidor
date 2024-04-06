@@ -156,4 +156,48 @@ export class VisitasService {
     ORDER BY cantidad_visitas DESC;
     `);
   }
+  async satisfactionCount(param?: string) {
+    console.log(param);
+    const result = this.visitasRepository
+      .createQueryBuilder('visitas')
+      .select('EXTRACT(MONTH FROM visitas."fechaVisita")', 'mes')
+      .addSelect('COUNT(visitas."satisfaccionPaciente")', 'count')
+      .where(
+        'EXTRACT(YEAR FROM visitas."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)',
+      )
+      .groupBy('mes')
+      .orderBy('mes');
+    if (param) {
+      console.log('entro a param');
+      result.andWhere('visitas."satisfaccionPaciente" = :param', {
+        param,
+      });
+    }
+    return await result.getRawMany();
+  }
 }
+/*
+    SELECT 
+    EXTRACT(MONTH FROM "fechaVisita") AS mes,
+    "satisfaccionPaciente",
+    COUNT("satisfaccionPaciente") AS conteo
+    FROM visitas
+    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) AND
+    "satisfaccionPaciente" = 'Deficiente'
+    GROUP BY mes, "satisfaccionPaciente"
+    ORDER BY mes;
+*/
+/*
+        .createQueryBuilder('visitas')
+      .select('EXTRACT(MONTH FROM visitas."fechaVisita")', 'mes')
+      .addSelect('COUNT(visitas."satisfaccionPaciente")', 'count')
+      .where(
+        'EXTRACT(YEAR FROM visitas."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)',
+      )
+      .andWhere('visitas."satisfaccionPaciente" = :param', {
+        param,
+      })
+      .groupBy('mes')
+      .orderBy('mes')
+      .getRawMany();
+  */

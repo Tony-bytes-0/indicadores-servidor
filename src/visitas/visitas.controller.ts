@@ -60,7 +60,10 @@ export class VisitasController {
   visitCount() {
     return this.visitasService.visitCount();
   }
-
+  @Get('satisfaccion')
+  async satisfactionCount(@Query() param: string) {
+    return await this.visitasService.satisfactionCount(param);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
