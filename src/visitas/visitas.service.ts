@@ -157,6 +157,44 @@ export class VisitasService {
     `);
   }
   async satisfactionCount(param?: string) {
+    const meses = await this.visitasRepository.query(`
+    SELECT generate_series(1, 12) AS mes
+ `);
+
+    let query = this.visitasRepository
+      .createQueryBuilder('visitas')
+      .select('EXTRACT(MONTH FROM visitas."fechaVisita")', 'mes')
+      .addSelect('COUNT(visitas."satisfaccionPaciente")', 'count')
+      .where(
+        'EXTRACT(YEAR FROM visitas."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)',
+      )
+      .groupBy('mes')
+      .orderBy('mes');
+
+    if (param) {
+      query = query.andWhere('visitas."satisfaccionPaciente" = :param', {
+        param,
+      });
+    }
+
+    // Ejecutar la consulta principal
+    const result = await query.getRawMany();
+
+    // Añadir los meses que no están en el resultado
+    meses.forEach((mes) => {
+      if (!result.some((res) => res.mes === mes.mes)) {
+        result.push({ mes: mes.mes, count: 0 });
+      }
+    });
+
+    // Ordenar el resultado por mes
+    result.sort((a, b) => a.mes - b.mes);
+
+    return result;
+  }
+
+  /*
+  async satisfactionCount(param?: string) {
     console.log(param);
     const result = this.visitasRepository
       .createQueryBuilder('visitas')
@@ -167,8 +205,8 @@ export class VisitasService {
       )
       .groupBy('mes')
       .orderBy('mes');
+
     if (param) {
-      console.log('entro a param');
       result.andWhere('visitas."satisfaccionPaciente" = :param', {
         param,
       });
@@ -176,28 +214,70 @@ export class VisitasService {
     return await result.getRawMany();
   }
 }
-/*
-    SELECT 
-    EXTRACT(MONTH FROM "fechaVisita") AS mes,
-    "satisfaccionPaciente",
-    COUNT("satisfaccionPaciente") AS conteo
-    FROM visitas
-    WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) AND
-    "satisfaccionPaciente" = 'Deficiente'
-    GROUP BY mes, "satisfaccionPaciente"
-    ORDER BY mes;
-*/
-/*
-        .createQueryBuilder('visitas')
-      .select('EXTRACT(MONTH FROM visitas."fechaVisita")', 'mes')
-      .addSelect('COUNT(visitas."satisfaccionPaciente")', 'count')
-      .where(
-        'EXTRACT(YEAR FROM visitas."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)',
-      )
-      .andWhere('visitas."satisfaccionPaciente" = :param', {
-        param,
-      })
-      .groupBy('mes')
-      .orderBy('mes')
-      .getRawMany();
   */
+
+  /*
+      
+          const deficiente = await this.visitasRepository.query(
+      `
+      WITH meses AS (
+        SELECT generate_series(1, 12) AS mes
+    )
+    SELECT 
+        m.mes,
+        COALESCE(COUNT(v."satisfaccionPaciente"), 0) AS conteo
+    FROM 
+        meses m
+    LEFT JOIN 
+        visitas v ON EXTRACT(MONTH FROM v."fechaVisita") = m.mes
+        AND EXTRACT(YEAR FROM v."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+        AND v."satisfaccionPaciente" = 'Deficiente'
+    GROUP BY 
+        m.mes
+    ORDER BY 
+        m.mes;
+      `,
+    );
+
+    const regular = await this.visitasRepository.query(
+      `
+      WITH meses AS (
+        SELECT generate_series(1, 12) AS mes
+    )
+    SELECT 
+        m.mes,
+        COALESCE(COUNT(v."satisfaccionPaciente"), 0) AS conteo
+    FROM 
+        meses m
+    LEFT JOIN 
+        visitas v ON EXTRACT(MONTH FROM v."fechaVisita") = m.mes
+        AND EXTRACT(YEAR FROM v."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+        AND v."satisfaccionPaciente" = 'Regular'
+    GROUP BY 
+        m.mes
+    ORDER BY 
+        m.mes;
+      `,
+    );
+    const buena = await this.visitasRepository.query(
+      `
+      WITH meses AS (
+        SELECT generate_series(1, 12) AS mes
+    )
+    SELECT 
+        m.mes,
+        COALESCE(COUNT(v."satisfaccionPaciente"), 0) AS conteo
+    FROM 
+        meses m
+    LEFT JOIN 
+        visitas v ON EXTRACT(MONTH FROM v."fechaVisita") = m.mes
+        AND EXTRACT(YEAR FROM v."fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE)
+        AND v."satisfaccionPaciente" = 'Buena'
+    GROUP BY 
+        m.mes
+    ORDER BY 
+        m.mes;
+      `,
+    );
+  */
+}

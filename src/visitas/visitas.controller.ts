@@ -61,7 +61,7 @@ export class VisitasController {
     return this.visitasService.visitCount();
   }
   @Get('satisfaccion')
-  async satisfactionCount(@Query() param: string) {
+  async satisfactionCount(@Query('param') param: string) {
     return await this.visitasService.satisfactionCount(param);
   }
   @Get(':id')
