@@ -13,7 +13,7 @@ export class Medico extends BaseEntity {
   especialidad: string;
   @OneToMany(() => Visitas, (visitas) => visitas.medico)
   visitas: Visitas;
-  @ManyToOne(() => NivelAcademico, (nivelAcademico) => nivelAcademico.id, {
+  @ManyToOne(() => NivelAcademico, (nivelAcademico) => nivelAcademico.medico, {
     eager: true,
   })
   nivelAcademico: NivelAcademico;

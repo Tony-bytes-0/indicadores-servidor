@@ -19,6 +19,10 @@ export class MedicoController {
   create(@Body() createMedicoDto: CreateMedicoDto) {
     return this.medicoService.create(createMedicoDto);
   }
+  @Get('nivelAcademico')
+  async nivelAcademico() {
+    return await this.medicoService.nivelAcademico();
+  }
 
   @Get()
   findAll() {

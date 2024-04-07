@@ -27,6 +27,16 @@ export class MedicoService {
     }
   }
 
+  async nivelAcademico() {
+    return this.medicoRepository.query(`
+    SELECT "nivel_academico"."nivelAcademico" as "nivelAcademico", COUNT("nivel_academico"."nivelAcademico") as count
+    FROM medico
+    JOIN "nivel_academico" ON medico."nivelAcademicoId" = "nivel_academico".id
+    GROUP BY "nivel_academico"."nivelAcademico"
+    ORDER BY count DESC;
+    `);
+  }
+
   findAll(): object {
     return this.medicoRepository.find();
   }
