@@ -64,6 +64,26 @@ export class VisitasController {
   async satisfactionCount(@Query('param') param: string) {
     return await this.visitasService.satisfactionCount(param);
   }
+  @Get('reports')
+  async reports(
+    @Query('enfermedad') enfermedad: string,
+    @Query('localidad') localidad: string,
+    @Query('fechaInicio') fechaInicio: string,
+    @Query('fechaFin') fechaFin: Date,
+    @Query('edadMin') edadMin: string,
+    @Query('edadMax') edadMax: string,
+    @Query('genero') genero: string,
+  ) {
+    return await this.visitasReportService.reports(
+      localidad,
+      fechaInicio,
+      fechaFin,
+      edadMax,
+      edadMin,
+      enfermedad,
+      genero,
+    );
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
