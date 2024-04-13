@@ -40,8 +40,9 @@ export class VisitasReportsServices {
         'persona.telefono',
         'persona.telefonoEmergencia',
         'persona.fechaNacimiento',
-      ]);
-
+      ])
+      .addSelect('COUNT(visitas.id)', 'visitas_count')
+      .groupBy('persona.id'); // Agrupa los resultados por la identificación de la persona
     if (localidad) {
       query.andWhere('persona.localidadId = :localidad', {
         localidad,
@@ -60,20 +61,40 @@ export class VisitasReportsServices {
         enfermedad,
       });
     }
-      if (fechaInicio && fechaFin) {
-        query.andWhere(
-          `visitas.fechaVisita BETWEEN '${fechaInicio}' AND '${fechaFin}'`,
-        );
-      }
-
-      const result = await query.getRawMany();
-
-      return result;
+    if (fechaInicio && fechaFin) {
+      query.andWhere(
+        `visitas.fechaVisita BETWEEN '${fechaInicio}' AND '${fechaFin}'`,
+      );
     }
+
+    const result = await query.getRawMany();
+
+    return result;
   }
-
-
-/*
+  async personalReport(identificacion: string) {
+    const query = this.visitasRepository
+      .createQueryBuilder('visitas')
+      .innerJoin('visitas.enfermedades', 'enfermedades')
+      .innerJoin('visitas.medico', 'medico')
+      .innerJoin('visitas.persona', 'persona')
+      .where('persona.identificacion = :identificacion', { identificacion })
+      .select([
+        'visitas.fechaVisita AS fechaVisita',
+        'enfermedades.nombreEnfermedad',
+        'peso',
+        'altura',
+        'temperatura',
+        'visitas.tensionSistolica',
+        'visitas.tensionDiastolica',
+        'observaciones',
+        'visitas.satisfaccionPaciente',
+        'medico.nombreMedico',
+        'medico.sacs',
+      ]);
+    const result = await query.getRawMany();
+    return result;
+  }
+} /*
       .andWhere('persona.localidadId = :localidad', { localidad })
       .andWhere(`persona.fechaNacimiento BETWEEN '${edadMin}' AND '${edadMax}'`)
       .andWhere('persona.genero = :genero', { genero })

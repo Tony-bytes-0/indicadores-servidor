@@ -84,6 +84,11 @@ export class VisitasController {
       genero,
     );
   }
+  @Get('personalReport') async personalReport(
+    @Query('identificacion') identificacion: string,
+  ) {
+    return await this.visitasReportService.personalReport(identificacion);
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.visitasService.findOne(+id);
