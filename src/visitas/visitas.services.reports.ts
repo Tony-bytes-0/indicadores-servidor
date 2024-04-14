@@ -81,6 +81,8 @@ export class VisitasReportsServices {
       .select([
         'visitas.fechaVisita AS fechaVisita',
         'enfermedades.nombreEnfermedad',
+        'persona.nombre',
+        'persona.apellido',
         'peso',
         'altura',
         'temperatura',

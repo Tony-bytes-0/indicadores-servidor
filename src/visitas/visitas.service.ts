@@ -137,15 +137,27 @@ export class VisitasService {
       ORDER BY EXTRACT (MONTH FROM("fechaVisita") );
     `);
   }
-  async orderByMost() {
-    return await this.visitasRepository.query(`
+  async orderByMost(mes: Date) {
+    console.log(mes);
+    const query = this.visitasRepository
+      .createQueryBuilder('visitas')
+      .select(['enfermedades.nombreEnfermedad'])
+      .innerJoin('visitas.enfermedades', 'enfermedades')
+      .addSelect('COUNT(visitas."satisfaccionPaciente")', 'count')
+      .where('extract(month from "fechaVisita") = :mes', {
+        mes,
+      })
+      .groupBy('enfermedades.nombreEnfermedad'); // Agrega un GROUP BY para agrupar por enfermedad
+
+    return await query.getRawMany();
+    /*     return await this.visitasRepository.query(`
     SELECT enfermedades."nombreEnfermedad", COUNT(enfermedades."nombreEnfermedad")
     FROM visitas
     LEFT JOIN enfermedades ON visitas."enfermedadesId" = enfermedades.id
     WHERE EXTRACT(YEAR FROM "fechaVisita") = EXTRACT(YEAR FROM CURRENT_DATE) 
     GROUP BY enfermedades."nombreEnfermedad"
     ORDER BY count DESC;
-  `);
+  `); */
   }
   async visitCount() {
     return await this.visitasRepository.query(`

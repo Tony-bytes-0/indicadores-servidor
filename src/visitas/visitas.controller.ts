@@ -37,8 +37,8 @@ export class VisitasController {
     return this.visitasService.countVisits();
   }
   @Get('ordenar')
-  orderByMost() {
-    return this.visitasService.orderByMost();
+  orderByMost(@Query('mes') mes: Date) {
+    return this.visitasService.orderByMost(mes);
   }
   @Get('mes')
   async getOrderBy(@Query('dateMonth') dateMonth: Date) {
